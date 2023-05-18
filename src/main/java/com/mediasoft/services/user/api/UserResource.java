@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mediasoft.services.user.domain.Role;
 import com.mediasoft.services.user.domain.User;
 import com.mediasoft.services.user.service.UserService;
+import io.github.pixee.security.Newlines;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -92,7 +93,7 @@ public class UserResource {
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             }catch (Exception e) {
                 log.error("Error logging in: {}", e.getMessage());
-                response.setHeader("error", e.getMessage());
+                response.setHeader("error", Newlines.stripAll(e.getMessage()));
                 response.setStatus(FORBIDDEN.value());
                 Map<String,String> error = new HashMap<>();
                 error.put("error_message", e.getMessage());
