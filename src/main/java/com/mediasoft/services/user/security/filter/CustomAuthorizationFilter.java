@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.pixee.security.Newlines;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -53,7 +54,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     chain.doFilter(request,response);
                 }catch (Exception e) {
                     log.error("Error logging in: {}", e.getMessage());
-                    response.setHeader("error", e.getMessage());
+                    response.setHeader("error", Newlines.stripAll(e.getMessage()));
                     response.setStatus(FORBIDDEN.value());
                     Map<String,String> error = new HashMap<>();
                     error.put("error_message", e.getMessage());
